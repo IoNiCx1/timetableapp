@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Orbit Timetable</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#04060d;--ink:#e8eefc;--dim:#7d8aa8;--line:#1b2640;--gold:#ffd36b;font-family:"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% -20%,#14213f 0,var(--bg) 60%);color:var(--ink);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+#stars{position:fixed;inset:0;z-index:0}
+#neb{position:fixed;inset:-25%;z-index:0;pointer-events:none;background:radial-gradient(40% 30% at 25% 30%,#3b1d6a66,transparent 70%),radial-gradient(35% 30% at 75% 65%,#0f4a8a55,transparent 70%),radial-gradient(25% 25% at 60% 20%,#8a2a5a44,transparent 70%);animation:neb 70s ease-in-out infinite alternate}
+@keyframes neb{to{transform:translate(4%,3%) rotate(6deg) scale(1.1)}}
+header{position:relative;z-index:2;display:flex;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+h1{font-size:20px;font-weight:300;letter-spacing:.12em;margin:0 auto 0 0}
+button,select,input{font:inherit;color:var(--ink);background:#0c1630cc;border:1px solid #2a3a63;border-radius:20px;padding:7px 14px}
+button{cursor:pointer}button:hover{border-color:var(--gold);box-shadow:0 0 12px #ffd36b44}
+button.go{background:linear-gradient(135deg,#ffb347,#ff6a4a);border:0;color:#1a0d00;font-weight:600}
+#nn{position:relative;z-index:2;padding:9px 20px;font-size:14px;border-bottom:1px solid var(--line);background:#070d1d99;backdrop-filter:blur(6px)}
+.tg{background:#ffffff1a;border-radius:8px;padding:2px 8px;font-size:11px;letter-spacing:.1em;margin-right:4px}.tg.now{background:#ff6a4a;color:#1a0d00}.tg.free{background:#7be0a8;color:#04200f}.free{color:#7be0a8}.sep{opacity:.3;margin:0 8px}
+main{position:relative;z-index:1;flex:1;display:flex;min-height:0}
+#wrap{flex:1;overflow:auto;padding:0 12px 40px}
+#head{display:grid;grid-template-columns:52px repeat(7,1fr);position:sticky;top:0;z-index:5;background:#04060dcc;backdrop-filter:blur(6px)}
+#head div{text-align:center;padding:10px 0;color:var(--dim)}#head .today{color:var(--gold)}
+#grid{display:grid;grid-template-columns:52px repeat(7,1fr);position:relative}
+#gut div{height:44px;font-size:11px;color:var(--dim);transform:translateY(-7px)}
+.col{position:relative;height:1056px;border-left:1px solid var(--line);cursor:crosshair;touch-action:none;
+ background:repeating-linear-gradient(to bottom,transparent 0 43px,#1b264088 43px 44px)}
+.blk{position:absolute;left:6px;right:6px;min-height:20px;border-radius:14px;padding:6px 10px;font-size:12px;overflow:hidden;cursor:grab;
+ background:radial-gradient(circle at 20% 0,color-mix(in srgb,var(--c) 70%,#fff) 0,var(--c) 70%);opacity:.62;mix-blend-mode:screen;color:#000;font-weight:600;
+ box-shadow:0 0 18px color-mix(in srgb,var(--c) 60%,transparent)}
+.blk.sel{opacity:.95;outline:2px solid #fff}.blk.kin{outline:1px dashed #fffa}
+.blk small{display:block;font-weight:400;opacity:.8}
+.rz{position:absolute;left:0;right:0;bottom:0;height:9px;cursor:ns-resize}
+.x{position:absolute;left:2px;right:2px;pointer-events:none;border-radius:10px;z-index:3;display:flex;align-items:center;justify-content:center;
+ text-align:center;font-size:11px;color:#fff;overflow:hidden;background:radial-gradient(ellipse,#fff7 0,#ffd36b99 45%,#ff6a4a55 100%);
+ border:1px dashed #fff;box-shadow:0 0 28px #ffd36bcc,inset 0 0 16px #fff8;animation:p 2.4s ease-in-out infinite}
+@keyframes p{50%{box-shadow:0 0 44px #ffd36b,inset 0 0 22px #fffb}}
+.ghost{position:absolute;left:6px;right:6px;border:1px dashed var(--gold);background:#ffd36b22;border-radius:14px;pointer-events:none}
+.now{position:absolute;left:52px;right:0;height:0;border-top:1px solid #ff6a4a88;z-index:4;pointer-events:none}
+.now b{position:absolute;top:-1px;height:2px;background:#ff6a4a;box-shadow:0 0 10px #ff6a4a,0 0 22px #ff6a4a}
+.now span{position:absolute;left:-52px;top:-9px;width:48px;text-align:right;font-size:11px;color:#ff8a6a;font-weight:600}
+#clk{font-variant-numeric:tabular-nums;color:var(--gold);letter-spacing:.1em}
+#panel{width:290px;padding:16px;border-left:1px solid var(--line);background:#070d1dcc;backdrop-filter:blur(8px);display:flex;flex-direction:column;gap:10px;overflow:auto}
+#panel label{font-size:12px;color:var(--dim);display:block}#panel input,#panel select{width:100%;border-radius:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#dy{display:flex;gap:5px}#dy b{flex:1;text-align:center;padding:6px 0;border:1px solid #2a3a63;border-radius:10px;cursor:pointer;color:var(--dim);font-weight:500}
+#dy b.on{background:linear-gradient(135deg,#ffb347,#ff6a4a);color:#1a0d00;border-color:transparent}
+.pre{display:flex;gap:10px;font-size:11px}.pre span{cursor:pointer;color:var(--gold);text-decoration:underline dotted}
+#scope{background:#ffd36b14;border:1px solid #ffd36b55;border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+#scope label{color:var(--ink)}#scope input{width:auto;margin-right:6px}
+#sw{display:flex;gap:8px;flex-wrap:wrap}#sw i{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent}#sw i.on{border-color:#fff}
+#hint{color:var(--dim);font-size:13px;line-height:1.6}
+@media(max-width:800px){#panel{display:none}}
+@media(prefers-reduced-motion:reduce){.x,#neb{animation:none}}
+</style></head><body>
+<canvas id="stars"></canvas><div id="neb"></div>
+<header><h1>ORBIT TIMETABLE</h1><span id="sync" style="font-size:12px"></span><span id="clk"></span>
+<button id="imp">Open timetable.txt</button><input type="file" id="file" accept=".txt" hidden>
+<button class="go" id="exp">Save timetable.txt</button></header>
+<div id="nn"></div>
+<main><div id="wrap"><div id="head"></div><div id="grid"></div></div><aside id="panel"></aside></main>
+<script>
+const H=44,DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],COL=['#4aa3ff','#ff6a4a','#e8c27a','#7be0a8','#c58bff','#ff8fc8','#7fe7f2'],ALL=[0,1,2,3,4,5,6];
+const $=s=>document.querySelector(s),hm=m=>String(m/60|0).padStart(2,'0')+':'+String(m%60).padStart(2,'0'),pm=s=>{const[a,b]=s.split(':');return+a*60+ +b};
+const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SRV=location.protocol.startsWith('http');
+let ev=[],sel=null,selDay=0,scope='all',nid=Date.now(),loaded=!SRV,tm_,mode=null;
+if(!SRV){try{ev=JSON.parse(localStorage.orbitTT3||'[]')}catch(_){}}
+const today=(new Date().getDay()+6)%7;
+$('#head').innerHTML='<div></div>'+DAYS.map((d,i)=>`<div class="${i==today?'today':''}">${d}</div>`).join('');
+$('#grid').innerHTML='<div id="gut">'+[...Array(24).keys()].map(h=>`<div>${hm(h*60)}</div>`).join('')+'</div>'+DAYS.map((_,i)=>`<div class="col" data-d="${i}"></div>`).join('');
+// ---- storage / sync ----
+function sync(m,c){$('#sync').textContent=m;$('#sync').style.color=c}
+const save=()=>{try{localStorage.orbitTT3=JSON.stringify(ev)}catch(_){}
+ if(SRV&&loaded){clearTimeout(tm_);tm_=setTimeout(()=>fetch('/tt',{method:'POST',headers:{'X-TT':'1'},body:toTxt()}).then(r=>{if(!r.ok)throw 0;sync('● synced to alarm','#7be0a8')}).catch(()=>sync('● sync failed','#ff6a4a')),250)}};
+const dstr=e=>e.days.length==7?'*':e.days.join('');
+function toTxt(){return ev.map(e=>[dstr(e),hm(e.s),hm(e.e),(e.t||'Untitled').replace(/[|\r\n]/g,' '),e.c,e.a||'e',(e.cmd||'').replace(/[\r\n]/g,' ')].join('|')).join('\n')+'\n'}
+function fromTxt(t){ev=[];t.split(/\r?\n/).forEach(l=>{const m=l.match(/^([*0-6]+)\|(\d+:\d+)\|(\d+:\d+)\|([^|]*)(?:\|(#[0-9a-fA-F]{6})(?:\|([sbne])(?:\|(.*))?)?)?$/);
+ if(m)ev.push({id:++nid,days:m[1][0]=='*'?[...ALL]:[...new Set(m[1].split('').map(Number))].sort(),s:pm(m[2]),e:pm(m[3]),t:m[4],c:m[5]||COL[ev.length%7],a:m[6]||'e',cmd:m[7]||''})})}
+// ---- render ----
+const cur=()=>ev.find(x=>x.id==sel);
+function render(keep){
+  document.querySelectorAll('.col').forEach(col=>{
+    const d=+col.dataset.d,l=ev.filter(e=>e.days.includes(d));let h='';
+    l.forEach(e=>h+=`<div class="blk ${e.id==sel?(d==selDay?'sel':'kin'):''}" data-id="${e.id}" style="--c:${e.c};top:${e.s*H/60}px;height:${(e.e-e.s)*H/60}px">${esc(e.t)||'Untitled'}<small>${hm(e.s)}–${hm(e.e)}${e.cmd?' ⚡':''}${e.a=='n'?' 🔕':''}</small><i class="rz"></i></div>`);
+    for(let i=0;i<l.length;i++)for(let j=i+1;j<l.length;j++){
+      const s=Math.max(l[i].s,l[j].s),e=Math.min(l[i].e,l[j].e);
+      if(e>s)h+=`<div class="x" style="top:${s*H/60}px;height:${(e-s)*H/60}px">${esc(l[i].t)} ∩ ${esc(l[j].t)}<br>${hm(s)}–${hm(e)}</div>`}
+    col.innerHTML=h});
+  if(!keep)panel();info()}
+// ---- editing helpers ----
+function own(){const e=cur();
+  if(scope=='day'&&e.days.length>1){const c={...e,days:[selDay],id:++nid};e.days=e.days.filter(x=>x!=selDay);ev.push(c);sel=c.id;return c}
+  return e}
+function edit(fn,full){const was=sel,id=document.activeElement.id,e=own();fn(e);save();
+  if(sel!=was||full){render();const el=id&&$('#'+id);if(el){el.focus();try{el.setSelectionRange(1e4,1e4)}catch(_){}}}else render(true)}
+function panel(){
+  const e=cur(),p=$('#panel');
+  if(!e){p.innerHTML='<div id="hint"><b>Drag</b> on a day to create a block.<br><b>Click</b> a block to edit it, <b>drag</b> it to move, drag its bottom edge to resize.<br>Overlaps glow gold.<br><br>Choose which days a block repeats on, set an alert time, and attach a command to run from the popup.</div>';return}
+  const multi=e.days.length>1;
+  p.innerHTML=`${multi?`<div id="scope"><label><input type="radio" name="sc" value="all" ${scope=='all'?'checked':''}>Edit all ${e.days.length} days</label><label><input type="radio" name="sc" value="day" ${scope=='day'?'checked':''}>Only ${DAYS[selDay]}</label></div>`:''}
+  <label>Title<input id="t" value="${esc(e.t)}"></label>
+  <label>Repeats on</label><div id="dy">${DAYS.map((n,i)=>`<b data-i="${i}" class="${e.days.includes(i)?'on':''}">${n[0]}</b>`).join('')}</div>
+  <div class="pre"><span data-p="01234">Weekdays</span><span data-p="56">Weekend</span><span data-p="0123456">Every day</span></div>
+  <div class="two"><label>Starts<input type="time" id="s" value="${hm(e.s)}"></label><label>Ends<input type="time" id="e" value="${hm(e.e)}"></label></div>
+  <label>Alert<select id="a"><option value="e">When it ends</option><option value="s">When it starts</option><option value="b">Start and end</option><option value="n">No alert</option></select></label>
+  <label>Command (button on the popup)<input id="cmd" placeholder="e.g. firefox https://… or notify-send hi" value="${esc(e.cmd)}"></label>
+  <div id="sw">${COL.map(c=>`<i data-c="${c}" style="background:${c}" class="${c==e.c?'on':''}"></i>`).join('')}</div>
+  <div class="two"><button id="dup">Duplicate</button><button id="del">Delete</button></div>`;
+  $('#a').value=e.a||'e';
+  p.querySelectorAll('[name=sc]').forEach(r=>r.onchange=()=>scope=r.value);
+  $('#t').oninput=()=>edit(x=>x.t=$('#t').value);
+  $('#cmd').oninput=()=>edit(x=>x.cmd=$('#cmd').value);
+  $('#a').onchange=()=>edit(x=>x.a=$('#a').value);
+  const tm=()=>{if(!$('#s').value||!$('#e').value)return;edit(x=>{x.s=pm($('#s').value);x.e=pm($('#e').value);if(x.e<=x.s)x.e=Math.min(1440,x.s+15)})};
+  $('#s').oninput=$('#e').oninput=tm;
+  $('#sw').onclick=x=>{if(x.target.dataset.c)edit(y=>y.c=x.target.dataset.c,true)};
+  const setDays=a=>{const e=cur();e.days=a;if(!a.includes(selDay))selDay=a[0];scope='all';save();render()};
+  $('#dy').onclick=x=>{const i=x.target.dataset.i;if(i==null)return;const s=new Set(cur().days);s.has(+i)?s.delete(+i):s.add(+i);if(s.size)setDays([...s].sort())};
+  p.querySelector('.pre').onclick=x=>{if(x.target.dataset.p)setDays(x.target.dataset.p.split('').map(Number))};
+  $('#dup').onclick=()=>{const c={...cur(),id:++nid,days:[...cur().days],t:(cur().t||'Untitled')+' copy'};ev.push(c);sel=c.id;scope='all';save();render()};
+  $('#del').onclick=()=>{const e=cur();if(scope=='day'&&e.days.length>1)e.days=e.days.filter(x=>x!=selDay);else ev=ev.filter(x=>x!=e);sel=null;save();render()};
+}
+// ---- pointer: create / move / resize ----
+document.querySelectorAll('.col').forEach(col=>{
+  let y0,g,base,moved;const snap=y=>Math.max(0,Math.min(1440,Math.round(y/H*4)*15)),Y=p=>snap(p.clientY-col.getBoundingClientRect().top);
+  col.onpointerdown=p=>{
+    const b=p.target.closest('.blk');y0=Y(p);moved=false;
+    if(b){const id=+b.dataset.id;if(id!=sel)scope='all';sel=id;selDay=+col.dataset.d;const e=cur();base={s:e.s,e:e.e};
+      mode=p.clientY>b.getBoundingClientRect().bottom-9?'rs':'mv';render();col.setPointerCapture(p.pointerId);return}
+    mode='new';g=document.createElement('div');g.className='ghost';col.appendChild(g);col.setPointerCapture(p.pointerId)};
+  col.onpointermove=p=>{if(!mode)return;const y=Y(p);
+    if(mode=='new'){const a=Math.min(y,y0),b=Math.max(y,y0);g.style.top=a*H/60+'px';g.style.height=(b-a)*H/60+'px';return}
+    const dl=y-y0;if(!moved&&!dl)return;const t=moved?cur():own();moved=true;
+    if(mode=='mv'){const len=base.e-base.s,s=Math.max(0,Math.min(1440-len,base.s+dl));t.s=s;t.e=s+len}
+    else t.e=Math.max(t.s+15,Math.min(1440,base.e+dl));
+    render()};
+  col.onpointerup=p=>{if(!mode)return;const m=mode;mode=null;
+    if(m=='new'){const y=Y(p),a=Math.min(y,y0),b=Math.max(y,y0);g.remove();
+      if(b-a>=15){const n={id:++nid,days:[+col.dataset.d],s:a,e:b,t:'',c:COL[ev.length%7],a:'e',cmd:''};ev.push(n);sel=n.id;selDay=n.days[0];scope='all';save();render();$('#t').focus()}
+      else{sel=null;render()}}
+    else if(moved)save()}});
+// ---- now / next ----
+let lastInfo='';
+function info(){
+  const t=new Date(),d=(t.getDay()+6)%7,m=t.getHours()*60+t.getMinutes(),el=$('#nn');let h;
+  const f=x=>x>=60?(x/60|0)+'h '+String(x%60).padStart(2,'0')+'m':x+'m',nm=e=>esc(e.t)||'Untitled';
+  if(!ev.length)h='<span class="tg">EMPTY</span> Drag on a day to add your first block';
+  else{
+    const c=ev.filter(e=>e.days.includes(d)&&e.s<=m&&m<e.e);let nx=null;
+    for(let o=0;o<=7&&!nx;o++){const dd=(d+o)%7,k=ev.filter(e=>e.days.includes(dd)&&(o>0||e.s>m)).sort((a,b)=>a.s-b.s)[0];if(k)nx={e:k,abs:o*1440+k.s,o}}
+    const when=nx&&(nx.o==0?'':nx.o==1?'tomorrow ':DAYS[(d+nx.o)%7]+' ')+hm(nx.e.s),inn=nx&&nx.abs-m;
+    if(c.length){const end=Math.max(...c.map(e=>e.e));
+      h=`<span class="tg now">NOW</span> <b>${c.map(nm).join(' ∩ ')}</b> · ends ${hm(end)} (${f(end-m)} left)`;
+      if(nx){const gap=nx.abs-end;h+=`<span class="sep">|</span><span class="tg">NEXT</span> <b>${nm(nx.e)}</b> ${when} (in ${f(inn)})`+(gap>0?` · <span class="free">free ${f(gap)} before it</span>`:'')}
+      else h+='<span class="sep">|</span>no more blocks'}
+    else if(nx)h=`<span class="tg free">FREE TIME</span> until <b>${when}</b> (${f(inn)})<span class="sep">|</span><span class="tg">NEXT</span> <b>${nm(nx.e)}</b>`;
+    else h='No upcoming blocks'}
+  if(h!=lastInfo){el.innerHTML=h;lastInfo=h}}
+// ---- export / import ----
+$('#exp').onclick=async()=>{const txt=toTxt();
+  try{const h=await showSaveFilePicker({suggestedName:'timetable.txt',types:[{accept:{'text/plain':['.txt']}}]});const w=await h.createWritable();await w.write(txt);await w.close()}
+  catch(err){if(err.name==='AbortError')return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt]));a.download='timetable.txt';a.click()}};
+$('#imp').onclick=()=>$('#file').click();
+$('#file').onchange=async e=>{fromTxt(await e.target.files[0].text());sel=null;save();render()};
+// ---- clock + now line ----
+const nowEl=document.createElement('div');nowEl.className='now';nowEl.innerHTML='<b></b><span></span>';$('#grid').appendChild(nowEl);
+function tick(){const t=new Date(),m=t.getHours()*60+t.getMinutes(),p=n=>String(n).padStart(2,'0');
+  nowEl.style.top=(m+t.getSeconds()/60)*H/60+'px';nowEl.querySelector('span').textContent=p(t.getHours())+':'+p(t.getMinutes());
+  const d=(t.getDay()+6)%7,b=nowEl.querySelector('b');b.style.left=d/7*100+'%';b.style.width=100/7+'%';
+  $('#clk').textContent=p(t.getHours())+':'+p(t.getMinutes())+':'+p(t.getSeconds());info()}
+// ---- starfield: parallax drift, twinkle, shooting stars ----
+const cv=$('#stars'),cx=cv.getContext('2d'),RM=matchMedia('(prefers-reduced-motion:reduce)').matches;let S=[],SH=[],W,HH;
+function sz(){W=cv.width=innerWidth;HH=cv.height=innerHeight;S=Array.from({length:Math.min(380,W*HH/5000|0)},()=>({x:Math.random()*W,y:Math.random()*HH,z:Math.random()**2*.95+.05,p:Math.random()*6,h:Math.random()<.2?210:Math.random()<.2?30:0}))}
+function frame(t){cx.clearRect(0,0,W,HH);
+  for(const s of S){if(!RM){s.x-=s.z*.35;s.y+=s.z*.12;if(s.x<0)s.x+=W;if(s.y>HH)s.y-=HH}
+    cx.globalAlpha=(.35+.65*Math.abs(Math.sin(t/1400*(.5+s.z)+s.p)))*(.4+s.z*.6);cx.fillStyle=s.h?`hsl(${s.h},90%,80%)`:'#fff';
+    cx.beginPath();cx.arc(s.x,s.y,.4+s.z*1.8,0,6.3);cx.fill()}
+  if(!RM&&Math.random()<.004)SH.push({x:Math.random()*W,y:Math.random()*HH*.5,vx:-(6+Math.random()*6),vy:3+Math.random()*3,l:1});
+  SH=SH.filter(s=>s.l>0);
+  for(const s of SH){s.x+=s.vx;s.y+=s.vy;s.l-=.018;const x2=s.x-s.vx*9,y2=s.y-s.vy*9,g=cx.createLinearGradient(s.x,s.y,x2,y2);
+    g.addColorStop(0,'rgba(255,255,255,'+s.l+')');g.addColorStop(1,'rgba(255,255,255,0)');cx.globalAlpha=1;cx.strokeStyle=g;cx.lineWidth=1.6;cx.beginPath();cx.moveTo(s.x,s.y);cx.lineTo(x2,y2);cx.stroke()}
+  if(!RM)requestAnimationFrame(frame)}
+sz();addEventListener('resize',sz);requestAnimationFrame(frame);
+// ---- boot ----
+tick();setInterval(tick,1000);render();{const t=new Date();$('#wrap').scrollTop=Math.max(0,(t.getHours()-2)*H)}
+if(SRV){fetch('/tt').then(r=>r.text()).then(t=>{fromTxt(t);loaded=true;sel=null;render();sync('● synced to alarm','#7be0a8')}).catch(()=>sync('● server offline','#ff6a4a'))}else sync('file mode: use Save','#7d8aa8');
+</script></body></html>
