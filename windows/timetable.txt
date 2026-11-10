@@ -1,0 +1,72 @@
+0|06:00|06:30|Wake up, water|#8bc34a|s|
+0|06:30|08:45|Travel to AMS (audio notes or flashcards)|#9e9e9e|n|
+0|08:45|09:30|Arrive, settle in|#607d8b|n|
+0|09:30|13:00|AMS work (AI analyst)|#2196f3|s|
+0|13:00|13:30|Lunch + GATE flashcards|#4caf50|s|
+0|13:30|18:30|AMS work (AI analyst)|#2196f3|s|
+0|18:30|18:50|Me time: music, no screens, no study|#8bc34a|s|
+0|18:50|21:00|Travel home (audio notes, no game)|#9e9e9e|n|
+0|21:00|21:20|Dinner, no phone, no game|#ff9800|s|
+0|21:20|23:00|GATE DA deep study block|#e53935|b|
+0|23:00|23:15|Log: 5 learned, 3 mistakes|#3f51b5|s|
+0|23:15|23:59|Phone away, bed|#607d8b|s|
+1|06:00|06:30|Wake up, water|#8bc34a|s|
+1|06:30|08:45|Travel to AMS (audio notes or flashcards)|#9e9e9e|n|
+1|08:45|09:30|Arrive, settle in|#607d8b|n|
+1|09:30|13:00|AMS work (AI analyst)|#2196f3|s|
+1|13:00|13:30|Lunch + GATE flashcards|#4caf50|s|
+1|13:30|18:30|AMS work (AI analyst)|#2196f3|s|
+1|18:30|18:50|Me time: music, no screens, no study|#8bc34a|s|
+1|18:50|21:00|Travel home (audio notes, no game)|#9e9e9e|n|
+1|21:00|21:20|Dinner, no phone, no game|#ff9800|s|
+1|21:20|23:00|GATE DA deep study block|#e53935|b|
+1|23:00|23:15|Log: 5 learned, 3 mistakes|#3f51b5|s|
+1|23:15|23:59|Phone away, bed|#607d8b|s|
+2|06:00|06:30|Wake up, water|#8bc34a|s|
+2|06:30|08:45|Travel to AMS (audio notes or flashcards)|#9e9e9e|n|
+2|08:45|09:30|Arrive, settle in|#607d8b|n|
+2|09:30|13:00|AMS work (AI analyst)|#2196f3|s|
+2|13:00|13:30|Lunch + GATE flashcards|#4caf50|s|
+2|13:30|18:30|AMS work (AI analyst)|#2196f3|s|
+2|18:30|18:50|Me time: music, no screens, no study|#8bc34a|s|
+2|18:50|21:00|Travel home (audio notes, no game)|#9e9e9e|n|
+2|21:00|21:20|Dinner, no phone, no game|#ff9800|s|
+2|21:20|23:00|GATE DA deep study block|#e53935|b|
+2|23:00|23:15|Log: 5 learned, 3 mistakes|#3f51b5|s|
+2|23:15|23:59|Phone away, bed|#607d8b|s|
+3|06:00|06:30|Wake up, water|#8bc34a|s|
+3|06:30|08:45|Travel to AMS (audio notes or flashcards)|#9e9e9e|n|
+3|08:45|09:30|Arrive, settle in|#607d8b|n|
+3|09:30|13:00|AMS work (AI analyst)|#2196f3|s|
+3|13:00|13:30|Lunch + GATE flashcards|#4caf50|s|
+3|13:30|18:30|AMS work (AI analyst)|#2196f3|s|
+3|18:30|18:50|Me time: music, no screens, no study|#8bc34a|s|
+3|18:50|21:00|Travel home (audio notes, no game)|#9e9e9e|n|
+3|21:00|21:20|Dinner, no phone, no game|#ff9800|s|
+3|21:20|23:00|GATE DA deep study block|#e53935|b|
+3|23:00|23:15|Log: 5 learned, 3 mistakes|#3f51b5|s|
+3|23:15|23:59|Phone away, bed|#607d8b|s|
+4|06:00|06:30|Wake up, water|#8bc34a|s|
+4|06:30|08:45|Travel to AMS (audio notes or flashcards)|#9e9e9e|n|
+4|08:45|09:30|Arrive, settle in|#607d8b|n|
+4|09:30|13:00|AMS work (AI analyst)|#2196f3|s|
+4|13:00|13:30|Lunch + GATE flashcards|#4caf50|s|
+4|13:30|18:30|AMS work (AI analyst)|#2196f3|s|
+4|18:30|18:50|Me time: music, no screens, no study|#8bc34a|s|
+4|18:50|21:00|Travel home (audio notes, no game)|#9e9e9e|n|
+4|21:00|21:20|Dinner, no phone, no game|#ff9800|s|
+4|21:20|23:00|GATE DA deep study block|#e53935|b|
+4|23:00|23:15|Log: 5 learned, 3 mistakes|#3f51b5|s|
+4|23:15|23:59|Phone away, bed|#607d8b|s|
+5|08:00|09:00|Wake up, water, walk|#8bc34a|n|
+5|09:00|12:00|Saturday block 1: revise mistakes|#e53935|b|
+5|12:00|13:00|Lunch + free time|#ff9800|n|
+5|13:00|16:00|Saturday block 2: new topic|#e53935|b|
+5|16:00|17:00|Free time: outside, friends, no screens|#9e9e9e|n|
+5|17:00|19:00|Saturday block 3: timed problem set|#e53935|b|
+5|19:00|21:00|Game (earned, max 2h, only after target)|#9e9e9e|s|
+6|08:00|09:30|Wake up, slow breakfast|#8bc34a|n|
+6|10:00|13:00|Sunday: mock test + error analysis|#e53935|b|
+6|13:00|15:00|Free time: meet people, go out|#ff9800|n|
+6|15:00|18:00|Sunday: weekly log review + next week plan|#e53935|s|
+6|19:00|21:00|Game (earned, max 2h, only after target)|#9e9e9e|s|
